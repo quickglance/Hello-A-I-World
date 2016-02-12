@@ -5,6 +5,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.BooleanSupplier;
 
 /**
  * AI class.
@@ -19,6 +20,7 @@ import java.util.*;
 public class AI {
     private Map<Node, Node> currentMoveList = new HashMap<Node, Node>(); //<source,destination>
     private List<Node> expandingCondidate = new ArrayList<Node>();
+    private Map<Node,Boolean> changeCondidate = new HashMap<Node, Boolean>();
     private Boolean isNodeHasFreeNeighbour = false;
 
     private int countNeighboursO1;
@@ -27,6 +29,8 @@ public class AI {
     public void doTurn(World world) {
 //        initialize values
         currentMoveList.clear();
+        changeCondidate.clear();
+
         if (world.getTurnNumber() == 0) {
             Node[] nodes = world.getMyNodes();
             for (Node node : nodes) {
@@ -44,7 +48,7 @@ public class AI {
                     isNodeHasFreeNeighbour = true;
             }
             if (!isNodeHasFreeNeighbour) {
-                expandingCondidate.remove(source);
+                changeCondidate.put(source,false);
                 continue;
             }
 //
@@ -86,7 +90,15 @@ public class AI {
             if (neighbours.length > 0) {
                 world.moveArmy(source, destination, source.getArmyCount() / 2);
                 currentMoveList.put(source, destination);
-                expandingCondidate.add(destination);
+                changeCondidate.put(destination,true);
+            }
+        }
+//        update change candidate
+        for(Node node:changeCondidate.keySet()){
+            if(changeCondidate.get(node)){
+                expandingCondidate.add(node);
+            }else {
+                expandingCondidate.remove(node);
             }
         }
     }
