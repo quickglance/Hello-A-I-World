@@ -2,9 +2,7 @@ package client;
 
 import client.model.Node;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * AI class.
@@ -18,19 +16,19 @@ import java.util.Set;
  */
 public class AI {
 
+    private HashMap<Integer, Integer> wave = new HashMap<Integer, Integer>();
     private int waveLevel = 0;
 
     public void doTurn(World world) {
         // fill this method, we've presented a stupid AI for example!
 
         int myID = world.getMyID();
-        HashMap<Integer, Integer> wave = new HashMap<Integer, Integer>(), center = new HashMap<Integer, Integer>(), border = new HashMap<Integer, Integer>(), inAttack = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> center = new HashMap<Integer, Integer>(), border = new HashMap<Integer, Integer>(), inAttack = new HashMap<Integer, Integer>();
 
         Node[] myNodes = world.getMyNodes();
         for (Node myNode : myNodes) {
-            if (wave.getOrDefault(myNode.getIndex(), -1) == -1) {
+            if (wave.getOrDefault(myNode.getIndex(), -1) == -1)
                 wave.put(myNode.getIndex(), waveLevel);
-            }
 
             // get neighbours
             Node[] neighbours = myNode.getNeighbours();
@@ -46,7 +44,7 @@ public class AI {
                     Node neighbour = neighbours[i];
 
                     int ownerID = neighbour.getOwner();
-                    if (!isInAttack && ownerID != -1 && ownerID != myID) { //attack algorithm
+                    if (!isInAttack && ownerID != -1 && ownerID != myID) { //attacker
 
                         isInAttack = true;
                         inAttack.put(myNode.getIndex(), neighbour.getIndex());
@@ -68,7 +66,6 @@ public class AI {
 
                     if (destination.getOwner() == -1) { // border
                         border.put(myNode.getIndex(), destination.getIndex());
-//                        wave.put(myID, waveLevel + 1);
                     } else { // center
                         center.put(myNode.getIndex(), destination.getIndex());
                     }
@@ -122,11 +119,10 @@ public class AI {
 
             int dstLevel = -1;
             Node[] neighbours = centerNode.getNeighbours();
-            Node dstNode = world.getMap().getNode(center.get(centerKey));
+//            Node dstNode = world.getMap().getNode(center.get(centerKey));
+            Node dstNode = null;
             for (Node neighbour : neighbours) {
                 Integer neighbourLevel = wave.getOrDefault(neighbour.getIndex(), -1);
-                if (centerLevel == null)
-                    System.out.println(centerKey);
                 if (neighbourLevel != -1 && neighbourLevel > centerLevel) {
                     if (dstLevel == -1) {
                         dstLevel = neighbourLevel;
@@ -139,7 +135,8 @@ public class AI {
                 }
             }
 
-            world.moveArmy(centerNode, dstNode, centerNode.getArmyCount());
+            if (dstNode != null)
+                world.moveArmy(centerNode, dstNode, centerNode.getArmyCount());
         }
 
         waveLevel++;
