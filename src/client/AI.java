@@ -18,14 +18,20 @@ import java.util.Set;
  */
 public class AI {
 
+    private int waveLevel = 0;
+
     public void doTurn(World world) {
         // fill this method, we've presented a stupid AI for example!
 
         int myID = world.getMyID();
-        HashMap<Integer, Integer> center = new HashMap<Integer, Integer>(), border = new HashMap<Integer, Integer>(), inAttack = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> wave = new HashMap<Integer, Integer>(), center = new HashMap<Integer, Integer>(), border = new HashMap<Integer, Integer>(), inAttack = new HashMap<Integer, Integer>();
 
         Node[] myNodes = world.getMyNodes();
         for (Node myNode : myNodes) {
+            if (wave.getOrDefault(myNode.getIndex(), -1) == -1) {
+                wave.put(myNode.getIndex(), waveLevel);
+            }
+
             // get neighbours
             Node[] neighbours = myNode.getNeighbours();
             int length = neighbours.length;
@@ -45,16 +51,6 @@ public class AI {
                         isInAttack = true;
                         inAttack.put(myNode.getIndex(), neighbour.getIndex());
 
-//                        //get help from adj nodes
-//                        Node[] attackerNeighbours = myNode.getNeighbours();
-//                        for (int j = 0; j < attackerNeighbours.length; j++) {
-//                            Node attackerNeighbour = attackerNeighbours[j];
-//                            if (attackerNeighbour.getOwner() == myID) {
-//                                world.moveArmy(attackerNeighbour, myNode, attackerNeighbour.getArmyCount());
-//                            }
-//                        }
-//                        world.moveArmy(myNode, neighbour, myNode.getArmyCount());
-
                     } else if (!isInAttack) {
                         if (i == 0) {
                             minArmy = neighbour.getArmyCount();
@@ -72,29 +68,9 @@ public class AI {
 
                     if (destination.getOwner() == -1) { // border
                         border.put(myNode.getIndex(), destination.getIndex());
-
-
-//                        Node[] borderNeighbours = myNode.getNeighbours();
-//                        for (int j = 0; j < borderNeighbours.length; j++) {
-//                            Node borderNeighbour = borderNeighbours[j];
-//                            if (borderNeighbour.getOwner() == myID) {
-//                                world.moveArmy(borderNeighbour, myNode, borderNeighbour.getArmyCount() / 2);
-//                            }
-//                        }
-//                        world.moveArmy(myNode, destination, myNode.getArmyCount());
-
+//                        wave.put(myID, waveLevel + 1);
                     } else { // center
                         center.put(myNode.getIndex(), destination.getIndex());
-
-
-//                        if (destination.getArmyCount() <= myNode.getArmyCount()) {
-//                            // move half of the node's army to the neighbor node
-//                            world.moveArmy(myNode, destination, (myNode.getArmyCount() - destination.getArmyCount()));
-//                        } else {
-//                            // move half of the node's army to the neighbor node
-//                            world.moveArmy(destination, myNode, (destination.getArmyCount() - myNode.getArmyCount()));
-//                        }
-
                     }
                 }
             }
@@ -108,9 +84,9 @@ public class AI {
             Node[] attackerNeighbours = inAttackNode.getNeighbours();
             for (int j = 0; j < attackerNeighbours.length; j++) {
                 Node attackerNeighbour = attackerNeighbours[j];
-                if(!inAttack.containsKey(attackerNeighbour.getIndex())){
-                    if(border.containsKey(attackerNeighbour.getIndex()) || center.containsKey(attackerNeighbour.getIndex()))
-                    border.remove(attackerNeighbour.getIndex());
+                if (!inAttack.containsKey(attackerNeighbour.getIndex())) {
+                    if (border.containsKey(attackerNeighbour.getIndex()) || center.containsKey(attackerNeighbour.getIndex()))
+                        border.remove(attackerNeighbour.getIndex());
                     center.remove(attackerNeighbour.getIndex());
                     if (attackerNeighbour.getOwner() == myID) {
                         world.moveArmy(attackerNeighbour, inAttackNode, attackerNeighbour.getArmyCount());
@@ -141,10 +117,32 @@ public class AI {
         for (int centerKey : centerKeys) {
             //get help from adj nodes
             Node centerNode = world.getMap().getNode(centerKey);
-            Integer dst = center.get(centerKey);
-            Node dstNode = world.getMap().getNode(dst);
-            world.moveArmy(centerKey, dst, centerNode.getArmyCount());
+
+            Integer centerLevel = wave.get(centerKey);
+
+            int dstLevel = -1;
+            Node[] neighbours = centerNode.getNeighbours();
+            Node dstNode = world.getMap().getNode(center.get(centerKey));
+            for (Node neighbour : neighbours) {
+                Integer neighbourLevel = wave.getOrDefault(neighbour.getIndex(), -1);
+                if (centerLevel == null)
+                    System.out.println(centerKey);
+                if (neighbourLevel != -1 && neighbourLevel > centerLevel) {
+                    if (dstLevel == -1) {
+                        dstLevel = neighbourLevel;
+                        dstNode = neighbour;
+                    }
+                    if (dstLevel < neighbourLevel) {
+                        dstLevel = neighbourLevel;
+                        dstNode = neighbour;
+                    }
+                }
+            }
+
+            world.moveArmy(centerNode, dstNode, centerNode.getArmyCount());
         }
+
+        waveLevel++;
     }
 
 }
