@@ -28,7 +28,7 @@ public class AI {
     private Map<Node, Boolean> changeCondidate = new HashMap<Node, Boolean>();
     private Boolean isNodeHasFreeNeighbour = false;
     private Boolean isNodeHasEnemyNeighbour = false;
-
+    private Node[] myNode;
     private List<Integer> enemyCoreNode = new ArrayList<Integer>();
 
     private int countNeighboursO1;
@@ -40,6 +40,7 @@ public class AI {
 //        initialize values
         currentMoveList.clear();
         changeCondidate.clear();
+        myNode = world.getMyNodes();
 
         if (world.getTurnNumber() == 0) {
             Node[] nodes = world.getMyNodes();
@@ -162,86 +163,115 @@ public class AI {
 //      tamam node haye hamsaye'e ke tahte hamle hastand niz check khahad shod
 
 
-        System.out.println("###################################");
-        for (Node node : underAttack) {
-            System.out.println(node.getIndex());
+//        System.out.println("###################################");
+//        for (Node node : underAttack) {
+//            System.out.println(node.getIndex());
+//
+//            if (node.getOwner() == enemyID) {
+//                changeCondidate.put(node, false);
+//                continue;
+//            }
+//            isNodeHasEnemyNeighbour = false;
+//            for (Node node1 : node.getNeighbours()) {
+//                if (node1.getOwner() == enemyID) {
+//                    continue;
+//                }
+//                if (node1.getOwner() == world.getMyID()) {
+//                    for (Node node2 : node1.getNeighbours()) {
+//                        if (node2.getOwner() == enemyID) {
+//                            if (!underAttack.contains(node1)) {
+//                                changeCondidate.put(node1, true);
+//                            }
+//                            break;
+//                        }
+//                    }
+//                } else if (node1.getOwner() == enemyID) {
+//                    isNodeHasEnemyNeighbour = true;
+//                }
+//            }
+//            if (!isNodeHasEnemyNeighbour) {
+//                changeCondidate.put(node, false);
+//            }
+//        }
+//
+////        update list
+//        for (Node node : changeCondidate.keySet()) {
+//            if (changeCondidate.get(node)) {
+//                underAttack.add(node);
+//            } else {
+//                underAttack.remove(node);
+//            }
+//        }
+//        changeCondidate.clear();
 
-            if (node.getOwner() == enemyID) {
-                changeCondidate.put(node, false);
-                continue;
-            }
-            isNodeHasEnemyNeighbour = false;
-            for (Node node1 : node.getNeighbours()) {
-                if (node1.getOwner() == enemyID) {
-                    continue;
-                }
-                if (node1.getOwner() == world.getMyID()) {
-                    for (Node node2 : node1.getNeighbours()) {
-                        if (node2.getOwner() == enemyID) {
-                            if (!underAttack.contains(node1)) {
-                                changeCondidate.put(node1, true);
-                            }
-                            break;
-                        }
-                    }
+        underAttack.clear();
+        supporter.clear();
+        Boolean isUnderattack = false;
+        Boolean hasFreeNeighbours = false;
+        for (Node node : myNode) {
+            Node[] neighbour = node.getNeighbours();
+            isUnderattack = false;
+            hasFreeNeighbours = false;
+            for (Node node1 : neighbour) {
+                if (node1.getOwner() == -1) {
+                    hasFreeNeighbours = true;
+                    break;
                 } else if (node1.getOwner() == enemyID) {
-                    isNodeHasEnemyNeighbour = true;
+                    isUnderattack = true;
+                    break;
                 }
             }
-            if (!isNodeHasEnemyNeighbour) {
-                changeCondidate.put(node, false);
-            }
-        }
-
-//        update list
-        for (Node node : changeCondidate.keySet()) {
-            if (changeCondidate.get(node)) {
+            if (isUnderattack) {
                 underAttack.add(node);
-            } else {
-                underAttack.remove(node);
+            } else if (!hasFreeNeighbours) {
+                supporter.add(node);
             }
         }
-        changeCondidate.clear();
 
 
-//        taghsim bandi mikonam tedad nirohaee ke support hastan va tedad niroohaee ke tahte hamle hastand
-//        va be har tahte hamle ye tedad niro miroosanam
-        int underAttackCount = underAttack.size();
-        int supporterCount = supporter.size();
-        int counter = 0;
-        Boolean nodeMoved = false;
-        if (underAttackCount != 0) {
-            counter = supporterCount / underAttackCount;
-        }
-        for (int i = 0; i < underAttackCount; i++) {
-            Node node = this.underAttack.get(i);
-            for (int j = i * counter; j < counter; j++) {
-                nodeMoved = false;
-                Node[] neighbours = supporter.get(j).getNeighbours();
-                for (Node node1 :neighbours){
-                    if(node1.getIndex() == node.getIndex()){
-                        world.moveArmy(supporter.get(j), node, supporter.get(j).getArmyCount() * 2 / 3);
-                        nodeMoved = true;
+        Map<Node, Node> moving = new HashMap<Node, Node>();
+        Map<Node, Integer> helping = new HashMap<Node, Integer>();//node that help send to it & power sended
+        System.out.println("#######################");
+        System.out.println(supporter.size());
+        for (int i = 0; i < 2; i++) {
+            for (Node node : supporter) {
+
+                Node[] neighbours = node.getNeighbours();
+                for (Node node1 : neighbours) {
+                    int force = 0;
+                    if (moving.containsValue(node))
+                        continue;
+                    if (underAttack.contains(node1)) {
+                        if (helping.containsKey(node)) {
+                            force = node.getArmyCount() + helping.get(node);
+                        } else {
+                            force = node.getArmyCount();
+                        }
+                        world.moveArmy(node, node1, force - 4);
+                        moving.put(node, node1);
+                        if (helping.containsKey(node1)) {
+                            helping.put(node1, helping.get(node1) + force);
+                        } else {
+                            helping.put(node1, force);
+                        }
                         break;
                     }
-                }
-                if(!nodeMoved){
-                    if (node.getIndex() > supporter.get(j).getIndex()) {
-                        Arrays.sort(neighbours, (o1, o2) -> {
-                            if (o1.getIndex() > o2.getIndex()) {
-                                return -1;
-                            }
-                            return 1;
-                        });
-                    } else {
-                        Arrays.sort(neighbours, (o1, o2) -> {
-                            if (o1.getIndex() < o2.getIndex()) {
-                                return -1;
-                            }
-                            return 1;
-                        });
+                    if (moving.containsKey(node1) && moving.get(node1).getIndex() != node.getIndex()) {
+                        if (helping.containsKey(node)) {
+                            force = node.getArmyCount() + helping.get(node);
+                        } else {
+                            force = node.getArmyCount();
+                        }
+                        world.moveArmy(node, node1, force - 4);
+                        moving.put(node, node1);
+                        if (helping.containsKey(node1)) {
+                            helping.put(node1, helping.get(node1) + force);
+                        } else {
+                            helping.put(node1, force);
+                        }
+                    } else if (moving.containsKey(node1) && moving.get(node1).getIndex() == node.getIndex()) {
+                        continue;
                     }
-                    world.moveArmy(supporter.get(j), neighbours[0], supporter.get(j).getArmyCount() * 2 / 3);
                 }
             }
         }
