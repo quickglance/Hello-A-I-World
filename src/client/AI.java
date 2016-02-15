@@ -26,9 +26,18 @@ public class AI {
         HashMap<Integer, Integer> center = new HashMap<Integer, Integer>(), border = new HashMap<Integer, Integer>(), inAttack = new HashMap<Integer, Integer>();
 
         Node[] myNodes = world.getMyNodes();
+
+        HashMap<Integer, HashMap<Integer, Integer>> path = new HashMap<Integer, HashMap<Integer, Integer>>();
+        FloydWarshall.shortestpath(FloydWarshall.getAdj(myNodes), path);
+
+        System.out.println("time passed after routing: " + world.getTurnTimePassed());
+
         for (Node myNode : myNodes) {
             if (wave.getOrDefault(myNode.getIndex(), -1) == -1)
                 wave.put(myNode.getIndex(), waveLevel);
+
+            // calculate shortest paths
+
 
             // get neighbours
             Node[] neighbours = myNode.getNeighbours();
@@ -140,6 +149,8 @@ public class AI {
         }
 
         waveLevel++;
+
+        System.out.println("time passed after all: " + world.getTurnTimePassed());
     }
 
 }
