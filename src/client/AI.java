@@ -37,6 +37,99 @@ public class AI {
 
     public void doTurn(World world) {
 
+        int myID = world.getMyID();
+        HashMap<Integer, Integer> center = new HashMap<Integer, Integer>(), border = new HashMap<Integer, Integer>(), inAttack = new HashMap<Integer, Integer>();
+
+        Node[] myNodes = world.getMyNodes();
+
+//        ArrayList<HashMap<Integer, HashMap<Integer, Integer>>> hashMaps = FloydWarshall.getAdj(myNodes);
+//        HashMap<Integer, HashMap<Integer, Integer>> adj = hashMaps.get(0);
+//        HashMap<Integer, HashMap<Integer, Integer>> path = hashMaps.get(1);
+//        FloydWarshall.shortestpath(adj, path);
+
+        System.out.println("time passed after routing: " + world.getTurnTimePassed());
+
+        for (Node myNode : myNodes) {
+
+            // get neighbours
+            Node[] neighbours = myNode.getNeighbours();
+
+            int length = neighbours.length;
+            if (length > 0) {
+
+                int minArmy = 0;
+                int minIndex = 0;
+                boolean isUnderAttack = false;
+                for (int i = 0; i < length; i++) {
+
+                    Node neighbour = neighbours[i];
+
+                    int ownerID = neighbour.getOwner();
+                    if (!isUnderAttack && ownerID != -1 && ownerID != myID) { //attacker
+
+                        isUnderAttack = true;
+                        inAttack.put(myNode.getIndex(), neighbour.getIndex());
+
+                    } else if (!isUnderAttack) {
+                        if (i == 0) {
+                            minArmy = neighbour.getArmyCount();
+                        }
+                        if (neighbour.getArmyCount() < minArmy) {
+                            minArmy = neighbour.getArmyCount();
+                            minIndex = i;
+                        }
+                        if (minArmy == 0)
+                            break;
+                    }
+                }
+                if (!isUnderAttack) {
+                    Node destination = neighbours[minIndex];
+
+                    if (destination.getOwner() == -1) { // border
+                        border.put(myNode.getIndex(), destination.getIndex());
+                    } else { // center
+                        center.put(myNode.getIndex(), destination.getIndex());
+                    }
+                }
+            }
+        }
+
+        // attackers get help from neighbours
+        Set<Integer> inAttackKeys = inAttack.keySet();
+        for (int inAttackKey : inAttackKeys) {
+            //get help from adj nodes except another attackers
+            Node inAttackNode = world.getMap().getNode(inAttackKey);
+            Node[] attackerNeighbours = inAttackNode.getNeighbours();
+            for (int j = 0; j < attackerNeighbours.length; j++) {
+                Node attackerNeighbour = attackerNeighbours[j];
+                if (!inAttack.containsKey(attackerNeighbour.getIndex())) {
+                    if (border.containsKey(attackerNeighbour.getIndex()) || center.containsKey(attackerNeighbour.getIndex()))
+                        border.remove(attackerNeighbour.getIndex());
+                    center.remove(attackerNeighbour.getIndex());
+                    if (attackerNeighbour.getOwner() == myID) {
+                        world.moveArmy(attackerNeighbour, inAttackNode, attackerNeighbour.getArmyCount());
+                    }
+                }
+            }
+            world.moveArmy(inAttackKey, inAttack.get(inAttackKey), inAttackNode.getArmyCount());
+        }
+
+        // borders get help from centers
+        Set<Integer> borderKeys = border.keySet();
+        for (int borderKey : borderKeys) {
+            //get help from adj nodes
+            Node borderNode = world.getMap().getNode(borderKey);
+            Node[] borderNeighbours = borderNode.getNeighbours();
+            for (int j = 0; j < borderNeighbours.length; j++) {
+                Node borderNeighbour = borderNeighbours[j];
+                if (center.containsKey(borderNeighbour.getIndex())) {
+                    center.remove(borderNeighbour.getIndex());
+                    world.moveArmy(borderNeighbour, borderNode, borderNeighbour.getArmyCount());
+                }
+            }
+            world.moveArmy(borderKey, border.get(borderKey), borderNode.getArmyCount());
+        }
+
         initial(world);
         expand(world);
 
@@ -88,9 +181,7 @@ public class AI {
                     isNodeHasEnemyNeighbour = true;
             }
             if (!isNodeHasFreeNeighbour) {
-                if (isNodeHasEnemyNeighbour) {
-                    underAttack.add(source);
-                } else {
+                if (!isNodeHasEnemyNeighbour) {
                     supporter.add(source);
                 }
                 changeCondidate.put(source, false);
