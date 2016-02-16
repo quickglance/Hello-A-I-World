@@ -35,62 +35,22 @@ public class AI {
     public void doTurn(World world) {
 
         initial(world);
+
         expand(world);
 
-        Node[] myNodes = world.getMyNodes();
+        categorizeMyNodes(world);
 
-        for (Node myNode : myNodes) {
+        if(underAttack.size() > 0) {
+            // attackers get help from neighbours
+            HashMap<Node, Node> moveList = new HashMap<Node, Node>();
+            getHelp(underAttack, moveList);
 
-            // get neighbours
-            Node[] neighbours = myNode.getNeighbours();
+            move(world, moveList);
 
-            int length = neighbours.length;
-            if (length > 0) {
-
-                boolean isUnderAttack = false;
-                for (int i = 0; i < length && !isUnderAttack; i++) {
-
-                    Node neighbour = neighbours[i];
-
-                    int ownerID = neighbour.getOwner();
-                    if (ownerID == enemyID) { //attacker
-
-                        isUnderAttack = true;
-                        underAttack.put(myNode.getIndex(), myNode);
-
-                    } else if (ownerID == -1) {
-                        break;
-                    }
-                    supporter.put(myNode.getIndex(), myNode);
-                    System.out.println();
-                }
-            }
+            attack(world);
         }
-
-        // attackers get help from neighbours
-        HashMap<Node, Node> moveList = new HashMap<Node, Node>();
-        getHelp(underAttack, moveList);
-
-        Set<Map.Entry<Node, Node>> entries = moveList.entrySet();
-        Iterator<Map.Entry<Node, Node>> iterator = entries.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Node, Node> next = iterator.next();
-            world.moveArmy(next.getKey(), next.getValue(), next.getKey().getArmyCount());
-        }
-
-        Set<Map.Entry<Integer, Node>> underAttacks = underAttack.entrySet();
-        Iterator<Map.Entry<Integer, Node>> iterator1 = underAttacks.iterator();
-        while (iterator1.hasNext()) {
-            Map.Entry<Integer, Node> next = iterator1.next();
-            Node node = next.getValue();
-
-            Node[] neighbours = node.getNeighbours();
-
-            for(Node neighbour : neighbours) {
-                if(neighbour.getOwner() == enemyID) {
-                    world.moveArmy(node, neighbour, node.getArmyCount());
-                }
-            }
+        else {
+            
         }
 
     }
@@ -187,6 +147,42 @@ public class AI {
         }
     }
 
+    private void categorizeMyNodes(World world) {
+        Node[] myNodes = world.getMyNodes();
+
+        underAttack.clear();
+
+        for (Node myNode : myNodes) {
+
+            // get neighbours
+            Node[] neighbours = myNode.getNeighbours();
+
+            int length = neighbours.length;
+            if (length > 0) {
+
+                boolean isUnderAttack = false, isSupporter = true;
+                for (int i = 0; i < length && !isUnderAttack; i++) {
+
+                    Node neighbour = neighbours[i];
+
+                    int ownerID = neighbour.getOwner();
+                    if (ownerID == enemyID) { //attacker
+
+                        isUnderAttack = true;
+                        underAttack.put(myNode.getIndex(), myNode);
+
+                    } else if (ownerID == -1) {
+                        isSupporter = false;
+                    }
+
+                }
+                if (isSupporter) {
+                    supporter.put(myNode.getIndex(), myNode);
+                }
+            }
+        }
+    }
+
     private void getHelp(HashMap<Integer, Node> nodes, HashMap<Node, Node> moveList) {
         moveList.clear();
 
@@ -220,11 +216,24 @@ public class AI {
 
                 if (neighbour.getOwner() == myID) {
                     if (supporter.containsKey(neighbour.getIndex())) {
-                        supporter.remove(neighbour.getIndex());
+                        if (moveList.containsKey(node) && moveList.get(node).getIndex() == neighbour.getIndex()) {
+                            System.out.println(neighbour.getIndex() + " -> " + node.getIndex());
+                            System.out.println("*****Move List*****");
+                            Set<Map.Entry<Node, Node>> entries = moveList.entrySet();
+                            Iterator<Map.Entry<Node, Node>> iterator = entries.iterator();
+                            while (iterator.hasNext()) {
+                                Map.Entry<Node, Node> next = iterator.next();
+                                System.out.println(next.getKey().getIndex() + " -> " + next.getValue().getIndex());
+                            }
+                            System.out.println("*****Move List*****");
+                        } else {
+                            supporter.remove(neighbour.getIndex());
 
-                        supporterNodes.put(neighbour.getIndex(), neighbour);
+                            supporterNodes.put(neighbour.getIndex(), neighbour);
 
-                        moveList.put(neighbour, node);
+                            moveList.put(neighbour, node);
+
+                        }
                     }
                 }
 
@@ -232,6 +241,33 @@ public class AI {
         }
 
         getHelpRecursive(supporter, supporterNodes, moveList);
+    }
+
+    private void move(World world, HashMap<Node, Node> moveList) {
+        Set<Map.Entry<Node, Node>> entries = moveList.entrySet();
+        Iterator<Map.Entry<Node, Node>> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Node, Node> next = iterator.next();
+            world.moveArmy(next.getKey(), next.getValue(), next.getKey().getArmyCount());
+        }
+    }
+
+    private void attack(World world) {
+        Set<Map.Entry<Integer, Node>> underAttacks = underAttack.entrySet();
+        Iterator<Map.Entry<Integer, Node>> iterator1 = underAttacks.iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry<Integer, Node> next = iterator1.next();
+            Node node = next.getValue();
+
+            Node[] neighbours = node.getNeighbours();
+
+            for (Node neighbour : neighbours) {
+                if (neighbour.getOwner() == enemyID) {
+                    world.moveArmy(node, neighbour, node.getArmyCount());
+                    break;
+                }
+            }
+        }
     }
 
 }
