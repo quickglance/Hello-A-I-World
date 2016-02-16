@@ -6,12 +6,13 @@ import java.util.*;
 
 public class FloydWarshall {
 
-    public static HashMap<Integer, HashMap<Integer, Integer>> getAdj(Node[] nodes) {
+    public static ArrayList<HashMap<Integer, HashMap<Integer, Integer>>> getAdj(Node[] nodes) {
         int n = nodes.length;
 
         int owner = nodes[0].getOwner();
 
         HashMap<Integer, HashMap<Integer, Integer>> adj = new HashMap<Integer, HashMap<Integer, Integer>>(n);
+        HashMap<Integer, HashMap<Integer, Integer>> path = new HashMap<Integer, HashMap<Integer, Integer>>(n);
 
 
         for (int i = 0; i < n; i++) {
@@ -20,7 +21,9 @@ public class FloydWarshall {
             int index = node.getIndex();
 
             HashMap<Integer, Integer> indexAdj = adj.get(index);
+            HashMap<Integer, Integer> indexPath = path.get(index);
             indexAdj = new HashMap<Integer, Integer>(n);
+            indexPath = new HashMap<Integer, Integer>(n);
 
             Node[] neighbours = node.getNeighbours();
 
@@ -29,11 +32,19 @@ public class FloydWarshall {
 
                 if (neighbour.getOwner() == owner) {
                     indexAdj.put(neighbour.getIndex(), 1);
+                    indexPath.put(neighbour.getIndex(), index);
                 }
             }
+
+            adj.put(index, indexAdj);
+            path.put(index, indexPath);
         }
 
-        return adj;
+
+        ArrayList<HashMap<Integer, HashMap<Integer, Integer>>> hashMaps = new ArrayList<>(2);
+        hashMaps.add(adj);
+        hashMaps.add(path);
+        return hashMaps;
     }
 
     public static void shortestpath(HashMap<Integer, HashMap<Integer, Integer>> adj, HashMap<Integer, HashMap<Integer, Integer>> path) {
@@ -54,20 +65,29 @@ public class FloydWarshall {
                 while (jIterator.hasNext()) {
                     int j = jIterator.next();
 
-                    int adj_ik = adj.get(i).getOrDefault(k, 0);
-                    int adj_kj = adj.get(k).getOrDefault(j, 0);
-                    int adj_ij = adj.get(i).getOrDefault(j, 0);
-                    int path_kj = path.get(k).getOrDefault(j, k);
+                    try {
 
-                    if (adj_ik + adj_kj < adj_ij) {
-                        adj.get(i).put(j, adj_ik + adj_kj);
-                        path.get(i).put(j, path_kj);
+                        int adj_ik = adj.get(i).getOrDefault(k, 0);
+                        int adj_kj = adj.get(k).getOrDefault(j, 0);
+                        int adj_ij = adj.get(i).getOrDefault(j, 0);
+                        int path_kj = path.get(k).getOrDefault(j, -1);
+
+                        if (adj_ik + adj_kj < adj_ij) {
+                            adj.get(i).put(j, adj_ik + adj_kj);
+                            path.get(i).put(j, path_kj);
+                        }
+
+                    } catch (NullPointerException e) {
+                        // do nothing
                     }
+
                 }
             }
         }
+
+        System.out.println();
     }
-    
+
     public static List<Integer> getPath(HashMap<Integer, HashMap<Integer, Integer>> paths, int start, int end) {
         System.out.println("From where to where do you want to find the shortest path?(0 to 4)");
 
@@ -95,7 +115,15 @@ public class FloydWarshall {
         return path;
     }
 
-    public static HashMap<Integer, HashMap<Integer, Integer>> con(int[][] a) {
+    public static int getNextNode(HashMap<Integer, HashMap<Integer, Integer>> paths, int start, int end) {
+        if (paths.get(end) != null)
+            start = paths.get(end).getOrDefault(start, -1);
+        else
+            start = -1;
+        return start;
+    }
+
+    public static HashMap<Integer, HashMap<Integer, Integer>> convert(int[][] a) {
         HashMap<Integer, HashMap<Integer, Integer>> b = new HashMap<Integer, HashMap<Integer, Integer>>();
 
         for (int i = 0; i < a.length; i++) {
@@ -160,8 +188,8 @@ public class FloydWarshall {
             path[i][i] = i;
 
 
-        HashMap<Integer, HashMap<Integer, Integer>> shortpath = con(m);
-        HashMap<Integer, HashMap<Integer, Integer>> mpath = con(path);
+        HashMap<Integer, HashMap<Integer, Integer>> shortpath = convert(m);
+        HashMap<Integer, HashMap<Integer, Integer>> mpath = convert(path);
         shortestpath(shortpath, mpath);
 
         // Prints out shortest distances.

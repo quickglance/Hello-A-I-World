@@ -27,8 +27,10 @@ public class AI {
 
         Node[] myNodes = world.getMyNodes();
 
-        HashMap<Integer, HashMap<Integer, Integer>> path = new HashMap<Integer, HashMap<Integer, Integer>>();
-        FloydWarshall.shortestpath(FloydWarshall.getAdj(myNodes), path);
+//        ArrayList<HashMap<Integer, HashMap<Integer, Integer>>> hashMaps = FloydWarshall.getAdj(myNodes);
+//        HashMap<Integer, HashMap<Integer, Integer>> adj = hashMaps.get(0);
+//        HashMap<Integer, HashMap<Integer, Integer>> path = hashMaps.get(1);
+//        FloydWarshall.shortestpath(adj, path);
 
         System.out.println("time passed after routing: " + world.getTurnTimePassed());
 
@@ -121,31 +123,39 @@ public class AI {
         // centers share their strength
         Set<Integer> centerKeys = center.keySet();
         for (int centerKey : centerKeys) {
-            //get help from adj nodes
+            // send help to attacker nodes
             Node centerNode = world.getMap().getNode(centerKey);
 
-            Integer centerLevel = wave.get(centerKey);
+//            int nextNode = FloydWarshall.getNextNode(path, centerKey, inAttackKeys.iterator().next());
 
-            int dstLevel = -1;
-            Node[] neighbours = centerNode.getNeighbours();
-//            Node dstNode = world.getMap().getNode(center.get(centerKey));
-            Node dstNode = null;
-            for (Node neighbour : neighbours) {
-                Integer neighbourLevel = wave.getOrDefault(neighbour.getIndex(), -1);
-                if (neighbourLevel != -1 && neighbourLevel > centerLevel) {
-                    if (dstLevel == -1) {
-                        dstLevel = neighbourLevel;
-                        dstNode = neighbour;
-                    }
-                    if (dstLevel < neighbourLevel) {
-                        dstLevel = neighbourLevel;
-                        dstNode = neighbour;
-                    }
-                }
-            }
+//            if (nextNode != -1) {
+//                world.moveArmy(centerKey, nextNode, centerNode.getArmyCount());
+//            } else {
 
-            if (dstNode != null)
-                world.moveArmy(centerNode, dstNode, centerNode.getArmyCount());
+//                Integer centerLevel = wave.get(centerKey);
+//
+//                int dstLevel = -1;
+//                Node[] neighbours = centerNode.getNeighbours();
+////            Node dstNode = world.getMap().getNode(center.get(centerKey));
+//                Node dstNode = null;
+//                for (Node neighbour : neighbours) {
+//                    Integer neighbourLevel = wave.getOrDefault(neighbour.getIndex(), -1);
+//                    if (neighbourLevel != -1 && neighbourLevel > centerLevel) {
+//                        if (dstLevel == -1) {
+//                            dstLevel = neighbourLevel;
+//                            dstNode = neighbour;
+//                        }
+//                        if (dstLevel < neighbourLevel) {
+//                            dstLevel = neighbourLevel;
+//                            dstNode = neighbour;
+//                        }
+//                    }
+//                }
+//
+//                if (dstNode != null)
+//                    world.moveArmy(centerNode, dstNode, centerNode.getArmyCount());
+
+//            }
         }
 
         waveLevel++;
