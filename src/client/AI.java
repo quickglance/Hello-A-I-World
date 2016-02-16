@@ -19,7 +19,6 @@ import java.util.function.BooleanSupplier;
  * See World interface for more details.
  */
 public class AI {
-    private Map<Integer, Integer> previousMoveList = new HashMap<Integer, Integer>();
     private Map<Integer, Integer> currentMoveList = new HashMap<Integer, Integer>(); //<source,destination>
 
     private List<Node> supporter = new ArrayList<Node>();
@@ -37,6 +36,13 @@ public class AI {
     private int enemyID;
 
     public void doTurn(World world) {
+
+        initial(world);
+        expand(world);
+
+    }
+
+    private void initial(World world) {
 //        initialize values
         currentMoveList.clear();
 //        changeCondidate.clear();
@@ -58,14 +64,9 @@ public class AI {
                 enemyID = 1;
             }
         }
+    }
 
-/*
-#################################
----------Expanding Part----------
----------------------------------
-#################################
- */
-//        update list
+    private void expand(World world) {
         for (Node node : changeCondidate.keySet()) {
             if (changeCondidate.get(node)) {
                 System.out.println("##");
@@ -126,45 +127,16 @@ public class AI {
                 if (o1.getOwner() == -1) {
                     return -1;
                 }
-//routing to enemy core
-                if (o1.getOwner() == world.getMyID() && o2.getOwner() == world.getMyID()) {
-                    for (int node : previousMoveList.keySet()) {
-                        if (node == o1.getIndex() && previousMoveList.get(node) == source.getIndex()) {
-                            return 1;
-                        }
-                    }
-                    if (Math.abs(o1.getIndex() - enemyCoreNode.get(0)) < Math.abs(o2.getIndex() - enemyCoreNode.get(0))) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                }
-
-                if (o1.getOwner() == enemyID) {
-                    return -1;
-                }
                 return 1;
             });
 
             Node destination = neighbours[0];
             if (neighbours.length > 0) {
-                if (source.getArmyCount() == 0)
-                    System.out.println();
                 world.moveArmy(source, destination, source.getArmyCount() / 2);
                 currentMoveList.put(source.getIndex(), destination.getIndex());
                 changeCondidate.put(destination, true);
             }
         }
-//        update change candidate
-//        for (Node node : changeCondidate.keySet()) {
-//            if (changeCondidate.get(node)) {
-//                expandingCondidate.add(node);
-//            } else {
-//                expandingCondidate.remove(node);
-//            }
-//        }
-//        changeCondidate.clear();
-
     }
 
 
