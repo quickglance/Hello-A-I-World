@@ -1,12 +1,8 @@
 package client;
 
 import client.model.Node;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
-import javax.swing.text.StyledEditorKit;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.BooleanSupplier;
 
 /**
  * AI class.
@@ -21,8 +17,8 @@ import java.util.function.BooleanSupplier;
 public class AI {
     private Map<Integer, Integer> currentMoveList = new HashMap<Integer, Integer>(); //<source,destination>
 
-    private List<Node> supporter = new ArrayList<Node>();
-    private List<Node> underAttack = new ArrayList<Node>();
+    private HashMap<Integer, Node> supporter = new HashMap<Integer, Node>();
+    private HashMap<Integer, Node> underAttack = new HashMap<Integer, Node>();
     private List<Node> expandingCondidate = new ArrayList<Node>();
     private Map<Node, Boolean> changeCondidate = new HashMap<Node, Boolean>();
     private Boolean isNodeHasFreeNeighbour = false;
@@ -33,21 +29,15 @@ public class AI {
     private int countNeighboursO1;
     private int countNeighboursO2;
 
+    private int myID;
     private int enemyID;
 
     public void doTurn(World world) {
 
-        int myID = world.getMyID();
-        HashMap<Integer, Integer> center = new HashMap<Integer, Integer>(), border = new HashMap<Integer, Integer>(), inAttack = new HashMap<Integer, Integer>();
+        initial(world);
+        expand(world);
 
         Node[] myNodes = world.getMyNodes();
-
-//        ArrayList<HashMap<Integer, HashMap<Integer, Integer>>> hashMaps = FloydWarshall.getAdj(myNodes);
-//        HashMap<Integer, HashMap<Integer, Integer>> adj = hashMaps.get(0);
-//        HashMap<Integer, HashMap<Integer, Integer>> path = hashMaps.get(1);
-//        FloydWarshall.shortestpath(adj, path);
-
-        System.out.println("time passed after routing: " + world.getTurnTimePassed());
 
         for (Node myNode : myNodes) {
 
@@ -57,87 +47,58 @@ public class AI {
             int length = neighbours.length;
             if (length > 0) {
 
-                int minArmy = 0;
-                int minIndex = 0;
                 boolean isUnderAttack = false;
-                for (int i = 0; i < length; i++) {
+                for (int i = 0; i < length && !isUnderAttack; i++) {
 
                     Node neighbour = neighbours[i];
 
                     int ownerID = neighbour.getOwner();
-                    if (!isUnderAttack && ownerID != -1 && ownerID != myID) { //attacker
+                    if (ownerID == enemyID) { //attacker
 
                         isUnderAttack = true;
-                        inAttack.put(myNode.getIndex(), neighbour.getIndex());
+                        underAttack.put(myNode.getIndex(), myNode);
 
-                    } else if (!isUnderAttack) {
-                        if (i == 0) {
-                            minArmy = neighbour.getArmyCount();
-                        }
-                        if (neighbour.getArmyCount() < minArmy) {
-                            minArmy = neighbour.getArmyCount();
-                            minIndex = i;
-                        }
-                        if (minArmy == 0)
-                            break;
+                    } else if (ownerID == -1) {
+                        break;
                     }
-                }
-                if (!isUnderAttack) {
-                    Node destination = neighbours[minIndex];
-
-                    if (destination.getOwner() == -1) { // border
-                        border.put(myNode.getIndex(), destination.getIndex());
-                    } else { // center
-                        center.put(myNode.getIndex(), destination.getIndex());
-                    }
+                    supporter.put(myNode.getIndex(), myNode);
+                    System.out.println();
                 }
             }
         }
 
         // attackers get help from neighbours
-        Set<Integer> inAttackKeys = inAttack.keySet();
-        for (int inAttackKey : inAttackKeys) {
-            //get help from adj nodes except another attackers
-            Node inAttackNode = world.getMap().getNode(inAttackKey);
-            Node[] attackerNeighbours = inAttackNode.getNeighbours();
-            for (int j = 0; j < attackerNeighbours.length; j++) {
-                Node attackerNeighbour = attackerNeighbours[j];
-                if (!inAttack.containsKey(attackerNeighbour.getIndex())) {
-                    if (border.containsKey(attackerNeighbour.getIndex()) || center.containsKey(attackerNeighbour.getIndex()))
-                        border.remove(attackerNeighbour.getIndex());
-                    center.remove(attackerNeighbour.getIndex());
-                    if (attackerNeighbour.getOwner() == myID) {
-                        world.moveArmy(attackerNeighbour, inAttackNode, attackerNeighbour.getArmyCount());
-                    }
-                }
-            }
-            world.moveArmy(inAttackKey, inAttack.get(inAttackKey), inAttackNode.getArmyCount());
+        HashMap<Node, Node> moveList = new HashMap<Node, Node>();
+        getHelp(underAttack, moveList);
+
+        Set<Map.Entry<Node, Node>> entries = moveList.entrySet();
+        Iterator<Map.Entry<Node, Node>> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Node, Node> next = iterator.next();
+            world.moveArmy(next.getKey(), next.getValue(), next.getKey().getArmyCount());
         }
 
-        // borders get help from centers
-        Set<Integer> borderKeys = border.keySet();
-        for (int borderKey : borderKeys) {
-            //get help from adj nodes
-            Node borderNode = world.getMap().getNode(borderKey);
-            Node[] borderNeighbours = borderNode.getNeighbours();
-            for (int j = 0; j < borderNeighbours.length; j++) {
-                Node borderNeighbour = borderNeighbours[j];
-                if (center.containsKey(borderNeighbour.getIndex())) {
-                    center.remove(borderNeighbour.getIndex());
-                    world.moveArmy(borderNeighbour, borderNode, borderNeighbour.getArmyCount());
+        Set<Map.Entry<Integer, Node>> underAttacks = underAttack.entrySet();
+        Iterator<Map.Entry<Integer, Node>> iterator1 = underAttacks.iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry<Integer, Node> next = iterator1.next();
+            Node node = next.getValue();
+
+            Node[] neighbours = node.getNeighbours();
+
+            for(Node neighbour : neighbours) {
+                if(neighbour.getOwner() == enemyID) {
+                    world.moveArmy(node, neighbour, node.getArmyCount());
                 }
             }
-            world.moveArmy(borderKey, border.get(borderKey), borderNode.getArmyCount());
         }
-
-        initial(world);
-        expand(world);
 
     }
 
     private void initial(World world) {
 //        initialize values
         currentMoveList.clear();
+        supporter.clear();
 //        changeCondidate.clear();
         myNode = world.getMyNodes();
 
@@ -150,12 +111,11 @@ public class AI {
             for (Node node1 : nodes) {
                 enemyCoreNode.add(node1.getIndex());
             }
-//            set enemy ID
-            if (world.getMyID() == 1) {
-                enemyID = 0;
-            } else {
-                enemyID = 1;
-            }
+
+//          set enemy ID
+            myID = world.getMyID();
+
+            enemyID = (myID == 1) ? 0 : 1;
         }
     }
 
@@ -181,9 +141,6 @@ public class AI {
                     isNodeHasEnemyNeighbour = true;
             }
             if (!isNodeHasFreeNeighbour) {
-                if (!isNodeHasEnemyNeighbour) {
-                    supporter.add(source);
-                }
                 changeCondidate.put(source, false);
                 continue;
             }
@@ -223,12 +180,58 @@ public class AI {
 
             Node destination = neighbours[0];
             if (neighbours.length > 0) {
-                world.moveArmy(source, destination, source.getArmyCount() / 2);
+                world.moveArmy(source, destination, source.getArmyCount());
                 currentMoveList.put(source.getIndex(), destination.getIndex());
                 changeCondidate.put(destination, true);
             }
         }
     }
 
+    private void getHelp(HashMap<Integer, Node> nodes, HashMap<Node, Node> moveList) {
+        moveList.clear();
+
+        HashMap<Integer, Node> supporterList = new HashMap<Integer, Node>();
+        Set<Map.Entry<Integer, Node>> entries = supporter.entrySet();
+        Iterator<Map.Entry<Integer, Node>> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, Node> next = iterator.next();
+            supporterList.put(next.getKey(), next.getValue());
+        }
+
+        getHelpRecursive(supporterList, nodes, moveList);
+    }
+
+    private void getHelpRecursive(HashMap<Integer, Node> supporter, HashMap<Integer, Node> nodes, HashMap<Node, Node> moveList) {
+        // final condition
+        if (supporter.isEmpty() || nodes.isEmpty()) {
+            return;
+        }
+
+        // recursive step
+        HashMap<Integer, Node> supporterNodes = new HashMap<Integer, Node>();
+
+        Set<Integer> keySet = nodes.keySet();
+        for (Integer key : keySet) {
+            Node node = nodes.get(key);
+
+            Node[] neighbours = node.getNeighbours();
+
+            for (Node neighbour : neighbours) {
+
+                if (neighbour.getOwner() == myID) {
+                    if (supporter.containsKey(neighbour.getIndex())) {
+                        supporter.remove(neighbour.getIndex());
+
+                        supporterNodes.put(neighbour.getIndex(), neighbour);
+
+                        moveList.put(neighbour, node);
+                    }
+                }
+
+            }
+        }
+
+        getHelpRecursive(supporter, supporterNodes, moveList);
+    }
 
 }
