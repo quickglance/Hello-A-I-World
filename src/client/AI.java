@@ -32,9 +32,6 @@ public class AI {
     private int myID;
     private int enemyID;
 
-    private HashMap<Integer, Integer> wave = new HashMap<Integer, Integer>();
-    private int waveLevel = 0;
-
     public void doTurn(World world) {
 
         initial(world);
@@ -163,25 +160,9 @@ public class AI {
     private void categorizeMyNodes(World world) {
         Node[] myNodes = world.getMyNodes();
 
-<<<<<<< HEAD
-//        ArrayList<HashMap<Integer, HashMap<Integer, Integer>>> hashMaps = FloydWarshall.getAdj(myNodes);
-//        HashMap<Integer, HashMap<Integer, Integer>> adj = hashMaps.get(0);
-//        HashMap<Integer, HashMap<Integer, Integer>> path = hashMaps.get(1);
-//        FloydWarshall.shortestpath(adj, path);
-
-        System.out.println("time passed after routing: " + world.getTurnTimePassed());
-
-        for (Node myNode : myNodes) {
-            if (wave.getOrDefault(myNode.getIndex(), -1) == -1)
-                wave.put(myNode.getIndex(), waveLevel);
-
-            // calculate shortest paths
-
-=======
         underAttack.clear();
 
         for (Node myNode : myNodes) {
->>>>>>> refs/remotes/origin/Mohammad-Amin
 
             // get neighbours
             Node[] neighbours = myNode.getNeighbours();
@@ -195,23 +176,6 @@ public class AI {
                     Node neighbour = neighbours[i];
 
                     int ownerID = neighbour.getOwner();
-<<<<<<< HEAD
-                    if (!isInAttack && ownerID != -1 && ownerID != myID) { //attacker
-
-                        isInAttack = true;
-                        inAttack.put(myNode.getIndex(), neighbour.getIndex());
-
-                    } else if (!isInAttack) {
-                        if (i == 0) {
-                            minArmy = neighbour.getArmyCount();
-                        }
-                        if (neighbour.getArmyCount() < minArmy) {
-                            minArmy = neighbour.getArmyCount();
-                            minIndex = i;
-                        }
-                        if (minArmy == 0)
-                            break;
-=======
                     if (ownerID == enemyID) { //attacker
 
                         isUnderAttack = true;
@@ -219,7 +183,6 @@ public class AI {
 
                     } else if (ownerID == -1) {
                         isSupporter = false;
->>>>>>> refs/remotes/origin/Mohammad-Amin
                     }
 
                 }
@@ -230,12 +193,6 @@ public class AI {
         }
     }
 
-<<<<<<< HEAD
-                    if (destination.getOwner() == -1) { // border
-                        border.put(myNode.getIndex(), destination.getIndex());
-                    } else { // center
-                        center.put(myNode.getIndex(), destination.getIndex());
-=======
     private void getHelp(HashMap<Integer, Node> nodes, HashMap<Node, Node> moveList) {
         moveList.clear();
 
@@ -287,33 +244,12 @@ public class AI {
                             moveList.put(neighbour, node);
 
                         }
->>>>>>> refs/remotes/origin/Mohammad-Amin
                     }
                 }
 
             }
         }
 
-<<<<<<< HEAD
-        // attackers get help from neighbours
-        Set<Integer> inAttackKeys = inAttack.keySet();
-        for (int inAttackKey : inAttackKeys) {
-            //get help from adj nodes except another attackers
-            Node inAttackNode = world.getMap().getNode(inAttackKey);
-            Node[] attackerNeighbours = inAttackNode.getNeighbours();
-            for (int j = 0; j < attackerNeighbours.length; j++) {
-                Node attackerNeighbour = attackerNeighbours[j];
-                if (!inAttack.containsKey(attackerNeighbour.getIndex())) {
-                    if (border.containsKey(attackerNeighbour.getIndex()) || center.containsKey(attackerNeighbour.getIndex()))
-                        border.remove(attackerNeighbour.getIndex());
-                    center.remove(attackerNeighbour.getIndex());
-                    if (attackerNeighbour.getOwner() == myID) {
-                        world.moveArmy(attackerNeighbour, inAttackNode, attackerNeighbour.getArmyCount());
-                    }
-                }
-            }
-            world.moveArmy(inAttackKey, inAttack.get(inAttackKey), inAttackNode.getArmyCount());
-=======
         getHelpRecursive(supporter, supporterNodes, moveList);
     }
 
@@ -323,7 +259,6 @@ public class AI {
         while (iterator.hasNext()) {
             Map.Entry<Node, Node> next = iterator.next();
             world.moveArmy(next.getKey(), next.getValue(), next.getKey().getArmyCount());
->>>>>>> refs/remotes/origin/Mohammad-Amin
         }
     }
 
@@ -342,53 +277,7 @@ public class AI {
                     break;
                 }
             }
-<<<<<<< HEAD
-            world.moveArmy(borderKey, border.get(borderKey), borderNode.getArmyCount());
         }
-
-        // centers share their strength
-        Set<Integer> centerKeys = center.keySet();
-        for (int centerKey : centerKeys) {
-            // send help to attacker nodes
-            Node centerNode = world.getMap().getNode(centerKey);
-
-//            int nextNode = FloydWarshall.getNextNode(path, centerKey, inAttackKeys.iterator().next());
-
-//            if (nextNode != -1) {
-//                world.moveArmy(centerKey, nextNode, centerNode.getArmyCount());
-//            } else {
-
-//                Integer centerLevel = wave.get(centerKey);
-//
-//                int dstLevel = -1;
-//                Node[] neighbours = centerNode.getNeighbours();
-////            Node dstNode = world.getMap().getNode(center.get(centerKey));
-//                Node dstNode = null;
-//                for (Node neighbour : neighbours) {
-//                    Integer neighbourLevel = wave.getOrDefault(neighbour.getIndex(), -1);
-//                    if (neighbourLevel != -1 && neighbourLevel > centerLevel) {
-//                        if (dstLevel == -1) {
-//                            dstLevel = neighbourLevel;
-//                            dstNode = neighbour;
-//                        }
-//                        if (dstLevel < neighbourLevel) {
-//                            dstLevel = neighbourLevel;
-//                            dstNode = neighbour;
-//                        }
-//                    }
-//                }
-//
-//                if (dstNode != null)
-//                    world.moveArmy(centerNode, dstNode, centerNode.getArmyCount());
-
-//            }
-=======
->>>>>>> refs/remotes/origin/Mohammad-Amin
-        }
-
-        waveLevel++;
-
-        System.out.println("time passed after all: " + world.getTurnTimePassed());
     }
 
 }
