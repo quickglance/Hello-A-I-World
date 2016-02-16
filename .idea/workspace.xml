@@ -26,19 +26,20 @@
       <file leaf-file-name="AI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/AI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.87799317">
-              <caret line="52" column="12" selection-start-line="52" selection-start-column="12" selection-end-line="52" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.9237435">
+              <caret line="63" column="52" selection-start-line="63" selection-start-column="52" selection-end-line="63" selection-end-column="52" />
               <folding>
                 <element signature="e#484#502#0" expanded="true" />
                 <element signature="e#588#603#0" expanded="true" />
                 <element signature="e#667#682#0" expanded="true" />
                 <element signature="e#1416#1428#0" expanded="true" />
-                <element signature="method#initial#0;class#AI#0" expanded="false" />
+                <element signature="e#1619#1631#0" expanded="true" />
+                <element signature="e#1694#1709#0" expanded="true" />
                 <element signature="method#expand#0;class#AI#0" expanded="false" />
                 <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
                 <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-                <element signature="e#6148#6163#0" expanded="true" />
-                <element signature="e#6875#6890#0" expanded="true" />
+                <element signature="e#6535#6550#0" expanded="true" />
+                <element signature="e#7262#7277#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -453,16 +454,16 @@
       <workItem from="1455618503027" duration="2047000" />
       <workItem from="1455621243935" duration="1436000" />
       <workItem from="1455623091764" duration="481000" />
-      <workItem from="1455624021515" duration="16065000" />
+      <workItem from="1455624021515" duration="18885000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20201000" />
+    <option name="totallyTimeSpent" value="23021000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -472,7 +473,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32967034" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17165776" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -521,12 +522,13 @@
             <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
             <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
+            <element signature="e#1619#1631#0" expanded="true" />
+            <element signature="e#1694#1709#0" expanded="true" />
             <element signature="method#expand#0;class#AI#0" expanded="false" />
             <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
             <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#6535#6550#0" expanded="true" />
+            <element signature="e#7262#7277#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -540,12 +542,13 @@
             <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
             <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
+            <element signature="e#1619#1631#0" expanded="true" />
+            <element signature="e#1694#1709#0" expanded="true" />
             <element signature="method#expand#0;class#AI#0" expanded="false" />
             <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
             <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#6535#6550#0" expanded="true" />
+            <element signature="e#7262#7277#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -559,12 +562,13 @@
             <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
             <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
+            <element signature="e#1619#1631#0" expanded="true" />
+            <element signature="e#1694#1709#0" expanded="true" />
             <element signature="method#expand#0;class#AI#0" expanded="false" />
             <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
             <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#6535#6550#0" expanded="true" />
+            <element signature="e#7262#7277#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -578,12 +582,13 @@
             <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
             <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
+            <element signature="e#1619#1631#0" expanded="true" />
+            <element signature="e#1694#1709#0" expanded="true" />
             <element signature="method#expand#0;class#AI#0" expanded="false" />
             <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
             <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#6535#6550#0" expanded="true" />
+            <element signature="e#7262#7277#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -597,19 +602,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/AI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.87799317">
-          <caret line="52" column="12" selection-start-line="52" selection-start-column="12" selection-end-line="52" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.9237435">
+          <caret line="63" column="52" selection-start-line="63" selection-start-column="52" selection-end-line="63" selection-end-column="52" />
           <folding>
             <element signature="e#484#502#0" expanded="true" />
             <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
             <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
+            <element signature="e#1619#1631#0" expanded="true" />
+            <element signature="e#1694#1709#0" expanded="true" />
             <element signature="method#expand#0;class#AI#0" expanded="false" />
             <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
             <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#6535#6550#0" expanded="true" />
+            <element signature="e#7262#7277#0" expanded="true" />
           </folding>
         </state>
       </provider>
