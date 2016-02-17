@@ -40,7 +40,7 @@ public class AI {
 
         categorizeMyNodes(world);
 
-        if(underAttack.size() > 0) {
+        if (underAttack.size() > 0) {
             // attackers get help from neighbours
             HashMap<Node, Node> moveList = new HashMap<Node, Node>();
             getHelp(underAttack, moveList);
@@ -48,12 +48,11 @@ public class AI {
             move(world, moveList);
 
             attack(world);
-        }
-        else {
+        } else {
             HashMap<Node, Node> moveList = new HashMap<Node, Node>();
 
             HashMap<Integer, Node> expanding = new HashMap<Integer, Node>();
-            for(Node node : expandingCondidate) {
+            for (Node node : expandingCondidate) {
                 expanding.put(node.getIndex(), node);
             }
             getHelp(expanding, moveList);
@@ -92,7 +91,6 @@ public class AI {
     private void expand(World world) {
         for (Node node : changeCondidate.keySet()) {
             if (changeCondidate.get(node)) {
-                System.out.println("##");
                 if (node.getOwner() == world.getMyID())
                     expandingCondidate.add(node);
             } else {
@@ -226,24 +224,12 @@ public class AI {
 
                 if (neighbour.getOwner() == myID) {
                     if (supporter.containsKey(neighbour.getIndex())) {
-                        if (moveList.containsKey(node) && moveList.get(node).getIndex() == neighbour.getIndex()) {
-                            System.out.println(neighbour.getIndex() + " -> " + node.getIndex());
-                            System.out.println("*****Move List*****");
-                            Set<Map.Entry<Node, Node>> entries = moveList.entrySet();
-                            Iterator<Map.Entry<Node, Node>> iterator = entries.iterator();
-                            while (iterator.hasNext()) {
-                                Map.Entry<Node, Node> next = iterator.next();
-                                System.out.println(next.getKey().getIndex() + " -> " + next.getValue().getIndex());
-                            }
-                            System.out.println("*****Move List*****");
-                        } else {
-                            supporter.remove(neighbour.getIndex());
+                        supporter.remove(node.getIndex());
+                        supporter.remove(neighbour.getIndex());
 
-                            supporterNodes.put(neighbour.getIndex(), neighbour);
+                        supporterNodes.put(neighbour.getIndex(), neighbour);
 
-                            moveList.put(neighbour, node);
-
-                        }
+                        moveList.put(neighbour, node);
                     }
                 }
 
@@ -273,7 +259,7 @@ public class AI {
 
             for (Node neighbour : neighbours) {
                 if (neighbour.getOwner() == enemyID) {
-                    world.moveArmy(node, neighbour, node.getArmyCount());
+                    world.moveArmy(node, neighbour, node.getArmyCount() * 2 / 3);
                     break;
                 }
             }
