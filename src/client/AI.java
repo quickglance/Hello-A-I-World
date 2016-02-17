@@ -30,6 +30,7 @@ public class AI {
     private int countNeighboursO1;
     private int countNeighboursO2;
 
+    private int allNodeCount;
     private int myID;
     private int enemyID;
 
@@ -71,6 +72,7 @@ public class AI {
         myNode = world.getMyNodes();
 
         if (world.getTurnNumber() == 0) {
+            allNodeCount = world.getMyNodes().length;
             Node[] nodes = world.getMyNodes();
             for (Node node : nodes) {
                 expandingCondidate.add(node);
@@ -263,23 +265,16 @@ public class AI {
     private void attack(World world) {
 
         Node enemy;
-        int counter;
-        Map<Integer, Integer> balanceForceHelper = new HashMap<Integer, Integer>();
         Map<Node, Node> attackOnProgressHelper = new HashMap<Node, Node>();
 
         for (Node node : attackOnProgress.keySet()) {
             enemy = attackOnProgress.get(node);
-            counter = 0;
             if (enemy.getOwner() == myID) {
-                if (!balanceForceHelper.containsKey(enemy.getIndex())) {
-                    for (Node node1 : attackOnProgress.keySet()) {
-                        if (attackOnProgress.get(node1).getIndex() == enemy.getIndex()) {
-                            counter++;
-                        }
-                    }
-                    balanceForceHelper.put(enemy.getIndex(), (enemy.getArmyCount() / counter));
+                for(Node node1:enemy.getNeighbours()){
+//                    if(supporter.containsValue(node1)){
+//                        world.moveArmy(enemy, node1,enemy.getArmyCount());
+//                    }
                 }
-                world.moveArmy(enemy, node, balanceForceHelper.get(enemy.getIndex()));
             } else if (enemy.getOwner() == enemyID) {
                 world.moveArmy(node, enemy, node.getArmyCount());
                 attackOnProgressHelper.put(node, enemy);
@@ -297,17 +292,15 @@ public class AI {
                     if (o1.getArmyCount() < o2.getArmyCount())
                         return -1;
                 }
-                if (o1.getOwner() == -1) {
-                    return -1;
-                }
-                if(o1.getOwner() == enemyID && o2.getOwner() == myID){
+                if(o1.getOwner()==enemyID){
                     return -1;
                 }
                 return 1;
+
             });
 
-            world.moveArmy(node,neighbours[0],node.getArmyCount());
-            attackOnProgressHelper.put(node,neighbours[0]);
+            world.moveArmy(node, neighbours[0], node.getArmyCount());
+            attackOnProgressHelper.put(node, neighbours[0]);
         }
 
         attackOnProgress.clear();

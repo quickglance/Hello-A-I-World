@@ -26,19 +26,32 @@
       <file leaf-file-name="AI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/AI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.87799317">
-              <caret line="52" column="12" selection-start-line="52" selection-start-column="12" selection-end-line="52" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.33295324">
+              <caret line="264" column="17" selection-start-line="264" selection-start-column="17" selection-end-line="264" selection-end-column="17" />
               <folding>
                 <element signature="e#484#502#0" expanded="true" />
-                <element signature="e#588#603#0" expanded="true" />
                 <element signature="e#667#682#0" expanded="true" />
-                <element signature="e#1416#1428#0" expanded="true" />
-                <element signature="method#initial#0;class#AI#0" expanded="false" />
-                <element signature="method#expand#0;class#AI#0" expanded="false" />
-                <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
-                <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-                <element signature="e#6148#6163#0" expanded="true" />
-                <element signature="e#6875#6890#0" expanded="true" />
+                <element signature="e#1019#1028#0" expanded="true" />
+                <element signature="e#1791#1806#0" expanded="true" />
+                <element signature="e#6631#6646#0" expanded="true" />
+                <element signature="e#7358#7373#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/Telegram Desktop/AI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="310" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#743#749#0" expanded="false" />
+                <element signature="e#1090#1102#0" expanded="false" />
+                <element signature="e#1521#1533#0" expanded="false" />
+                <element signature="e#1716#1728#0" expanded="false" />
+                <element signature="e#9473#9485#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -97,6 +110,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -149,8 +164,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -454,25 +467,24 @@
       <workItem from="1455621243935" duration="1436000" />
       <workItem from="1455623091764" duration="481000" />
       <workItem from="1455624021515" duration="16065000" />
+      <workItem from="1455708723629" duration="1373000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20201000" />
+    <option name="totallyTimeSpent" value="21574000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17165776" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -481,13 +493,15 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3934066" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3934066" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -518,15 +532,11 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#484#502#0" expanded="true" />
-            <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
-            <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
-            <element signature="method#expand#0;class#AI#0" expanded="false" />
-            <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
-            <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#1019#1028#0" expanded="true" />
+            <element signature="e#1791#1806#0" expanded="true" />
+            <element signature="e#6631#6646#0" expanded="true" />
+            <element signature="e#7358#7373#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -537,15 +547,11 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#484#502#0" expanded="true" />
-            <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
-            <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
-            <element signature="method#expand#0;class#AI#0" expanded="false" />
-            <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
-            <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#1019#1028#0" expanded="true" />
+            <element signature="e#1791#1806#0" expanded="true" />
+            <element signature="e#6631#6646#0" expanded="true" />
+            <element signature="e#7358#7373#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -556,15 +562,11 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#484#502#0" expanded="true" />
-            <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
-            <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
-            <element signature="method#expand#0;class#AI#0" expanded="false" />
-            <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
-            <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#1019#1028#0" expanded="true" />
+            <element signature="e#1791#1806#0" expanded="true" />
+            <element signature="e#6631#6646#0" expanded="true" />
+            <element signature="e#7358#7373#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -575,15 +577,26 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#484#502#0" expanded="true" />
-            <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
-            <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
-            <element signature="method#expand#0;class#AI#0" expanded="false" />
-            <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
-            <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#1019#1028#0" expanded="true" />
+            <element signature="e#1791#1806#0" expanded="true" />
+            <element signature="e#6631#6646#0" expanded="true" />
+            <element signature="e#7358#7373#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/AI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#484#502#0" expanded="true" />
+            <element signature="e#667#682#0" expanded="true" />
+            <element signature="e#1019#1028#0" expanded="true" />
+            <element signature="e#1791#1806#0" expanded="true" />
+            <element signature="e#6631#6646#0" expanded="true" />
+            <element signature="e#7358#7373#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -595,21 +608,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Downloads/Telegram Desktop/AI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="310" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#743#749#0" expanded="false" />
+            <element signature="e#1090#1102#0" expanded="false" />
+            <element signature="e#1521#1533#0" expanded="false" />
+            <element signature="e#1716#1728#0" expanded="false" />
+            <element signature="e#9473#9485#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/AI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.87799317">
-          <caret line="52" column="12" selection-start-line="52" selection-start-column="12" selection-end-line="52" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.33295324">
+          <caret line="264" column="17" selection-start-line="264" selection-start-column="17" selection-end-line="264" selection-end-column="17" />
           <folding>
             <element signature="e#484#502#0" expanded="true" />
-            <element signature="e#588#603#0" expanded="true" />
             <element signature="e#667#682#0" expanded="true" />
-            <element signature="e#1416#1428#0" expanded="true" />
-            <element signature="method#initial#0;class#AI#0" expanded="false" />
-            <element signature="method#expand#0;class#AI#0" expanded="false" />
-            <element signature="method#categorizeMyNodes#0;class#AI#0" expanded="false" />
-            <element signature="method#getHelp#0;class#AI#0" expanded="false" />
-            <element signature="e#6148#6163#0" expanded="true" />
-            <element signature="e#6875#6890#0" expanded="true" />
+            <element signature="e#1019#1028#0" expanded="true" />
+            <element signature="e#1791#1806#0" expanded="true" />
+            <element signature="e#6631#6646#0" expanded="true" />
+            <element signature="e#7358#7373#0" expanded="true" />
           </folding>
         </state>
       </provider>
