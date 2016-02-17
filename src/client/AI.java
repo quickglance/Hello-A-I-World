@@ -49,17 +49,28 @@ public class AI {
             move(world, moveList);
 
             attack(world);
+<<<<<<< HEAD
         } else {
             HashMap<Node, Node> moveList = new HashMap<Node, Node>();
 
             HashMap<Integer, Node> expanding = new HashMap<Integer, Node>();
             for (Node node : expandingCondidate) {
+=======
+        }
+        else {
+            HashMap<Node, Node> moveList = new HashMap<Node, Node>();
+
+            HashMap<Integer, Node> expanding = new HashMap<Integer, Node>();
+            for(Node node : expandingCondidate) {
+>>>>>>> origin/Mohammad-Amin
                 expanding.put(node.getIndex(), node);
             }
             getHelp(expanding, moveList);
 
             move(world, moveList);
         }
+
+        System.out.println(world.getTurnTimePassed());
 
     }
 
