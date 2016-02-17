@@ -25,6 +25,7 @@ public class AI {
     private Boolean isNodeHasEnemyNeighbour = false;
     private Node[] myNode;
     private List<Integer> enemyCoreNode = new ArrayList<Integer>();
+    private Map<Node, Node> attackOnProgress = new HashMap<Node, Node>();
 
     private int countNeighboursO1;
     private int countNeighboursO2;
@@ -40,7 +41,7 @@ public class AI {
 
         categorizeMyNodes(world);
 
-        if(underAttack.size() > 0) {
+        if (underAttack.size() > 0) {
             // attackers get help from neighbours
             HashMap<Node, Node> moveList = new HashMap<Node, Node>();
             getHelp(underAttack, moveList);
@@ -48,9 +49,16 @@ public class AI {
             move(world, moveList);
 
             attack(world);
-        }
-        else {
-            
+        } else {
+            HashMap<Node, Node> moveList = new HashMap<Node, Node>();
+
+            HashMap<Integer, Node> expanding = new HashMap<Integer, Node>();
+            for (Node node : expandingCondidate) {
+                expanding.put(node.getIndex(), node);
+            }
+            getHelp(expanding, moveList);
+
+            move(world, moveList);
         }
 
     }
@@ -253,21 +261,57 @@ public class AI {
     }
 
     private void attack(World world) {
-        Set<Map.Entry<Integer, Node>> underAttacks = underAttack.entrySet();
-        Iterator<Map.Entry<Integer, Node>> iterator1 = underAttacks.iterator();
-        while (iterator1.hasNext()) {
-            Map.Entry<Integer, Node> next = iterator1.next();
-            Node node = next.getValue();
 
-            Node[] neighbours = node.getNeighbours();
+        Node enemy;
+        int counter;
+        Map<Integer, Integer> balanceForceHelper = new HashMap<Integer, Integer>();
+        Map<Node, Node> attackOnProgressHelper = new HashMap<Node, Node>();
 
-            for (Node neighbour : neighbours) {
-                if (neighbour.getOwner() == enemyID) {
-                    world.moveArmy(node, neighbour, node.getArmyCount());
-                    break;
+        for (Node node : attackOnProgress.keySet()) {
+            enemy = attackOnProgress.get(node);
+            counter = 0;
+            if (enemy.getOwner() == myID) {
+                if (!balanceForceHelper.containsKey(enemy.getIndex())) {
+                    for (Node node1 : attackOnProgress.keySet()) {
+                        if (attackOnProgress.get(node1).getIndex() == enemy.getIndex()) {
+                            counter++;
+                        }
+                    }
+                    balanceForceHelper.put(enemy.getIndex(), (enemy.getArmyCount() / counter));
                 }
+                world.moveArmy(enemy, node, balanceForceHelper.get(enemy.getIndex()));
+            } else if (enemy.getOwner() == enemyID) {
+                world.moveArmy(node, enemy, node.getArmyCount());
+                attackOnProgressHelper.put(node, enemy);
             }
         }
+
+
+        for (Integer nodeIndex : underAttack.keySet()) {
+            Node node = underAttack.get(nodeIndex);
+            if (attackOnProgressHelper.containsKey(node))
+                continue;
+            Node[] neighbours = node.getNeighbours();
+            Arrays.sort(neighbours, (o1, o2) -> {
+                if (o1.getOwner() == enemyID && o2.getOwner() == enemyID) {
+                    if (o1.getArmyCount() < o2.getArmyCount())
+                        return -1;
+                }
+                if (o1.getOwner() == -1) {
+                    return -1;
+                }
+                if(o1.getOwner() == enemyID && o2.getOwner() == myID){
+                    return -1;
+                }
+                return 1;
+            });
+
+            world.moveArmy(node,neighbours[0],node.getArmyCount());
+            attackOnProgressHelper.put(node,neighbours[0]);
+        }
+
+        attackOnProgress.clear();
+        attackOnProgress.putAll(attackOnProgressHelper);
     }
 
 }
